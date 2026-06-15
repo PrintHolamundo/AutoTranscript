@@ -89,16 +89,21 @@ def transcribe_latest_file():
         # Transcribe the audio file
         result = model.transcribe(latest_file_path, verbose=True)
 
-        transcript_text = result["text"]
         detected_language = result["language"]
 
         # Save to the TRANSCRIPTIONS folder
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(f"--- Detected Language (Model {WHISPER_MODEL}) on {DEVICE.upper()}: {detected_language.upper()} ---\n\n")
-            f.write(transcript_text)
+
+            for segment in result["segments"]:
+                start = segment["start"]
+                end = segment["end"]
+                text = segment["text"].strip()
+
+                f.write(f"[{start:.2f} - {end:.2f}] {text}\n")
 
         print(f"\n🎉 Successfully saved transcript in **{TRANSCRIPT_DIR}** as: **{os.path.basename(output_path)}**")
-        print(f"   Language Detected: **{detected_language.upper()}**")
+        print(f"   Language Detected: **{detected_language.upper()}**")
 
     except Exception as e:
         print(f"❌ Error during processing: {e}")

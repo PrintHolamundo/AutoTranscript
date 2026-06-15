@@ -1,4 +1,5 @@
 #!/bin/bash
 
-python main.py
-read -r
+source "$HOME/AutoTranscript/.venv/bin/activate"
+
+python "$HOME/AutoTranscript/main.py"
