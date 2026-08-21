@@ -87,7 +87,13 @@ def transcribe_latest_file():
 
     try:
         # Transcribe the audio file
-        result = model.transcribe(latest_file_path, verbose=True)
+        result = model.transcribe(
+                latest_file_path, 
+                verbose=True,
+                condition_on_previous_text=False,  
+                no_speech_threshold=0.6,           
+                compression_ratio_threshold=2.4    
+            )
 
         detected_language = result["language"]
 
